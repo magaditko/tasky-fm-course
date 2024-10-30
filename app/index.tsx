@@ -1,4 +1,4 @@
-import { StyleSheet, TextInput, ScrollView } from "react-native";
+import { StyleSheet, TextInput, FlatList, View, Text } from "react-native";
 import { theme } from "../theme";
 import { ShoppingListItem } from "../components/ShoppingListItem";
 import { useState } from "react";
@@ -16,7 +16,7 @@ const initialList: ShoppingListItemType[] = [
 
 export default function App() {
   const [value, setValue] = useState("");
-  const [shoppingList, setShoppingList] = useState<ShoppingListItemType[]>(initialList);
+  const [shoppingList, setShoppingList] = useState<ShoppingListItemType[]>([]);
 
   const handleSubmit = () => {
     if (value) {
@@ -27,24 +27,29 @@ export default function App() {
   };
 
   return (
-    <ScrollView
+    <FlatList
+      data={shoppingList}
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
       stickyHeaderIndices={[0]}
-    >
-      <TextInput
-        style={styles.textInput}
-        placeholder="E.g. Coffee"
-        value={value}
-        onChangeText={setValue}
-        // keyboardType
-        returnKeyType="done"
-        onSubmitEditing={handleSubmit}
-      />
-      {shoppingList.map((item) => (
-        <ShoppingListItem name={item.name} key={item.id} />
-      ))}
-    </ScrollView>
+      ListEmptyComponent={
+        <View style={styles.listEmptyContainer}>
+          <Text>Your shopping list is empty</Text>
+        </View>
+      }
+      renderItem={({ item }) => <ShoppingListItem name={item.name} />}
+      ListHeaderComponent={
+        <TextInput
+          style={styles.textInput}
+          placeholder="E.g. Coffee"
+          value={value}
+          onChangeText={setValue}
+          // keyboardType
+          returnKeyType="done"
+          onSubmitEditing={handleSubmit}
+        />
+      }
+    />
   );
 }
 
@@ -66,5 +71,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     borderRadius: 50,
     backgroundColor: theme.colorWhite,
+  },
+  listEmptyContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 18,
   },
 });
