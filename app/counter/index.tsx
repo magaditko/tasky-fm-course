@@ -11,7 +11,7 @@ import { getFromStorage, saveToStorage } from "../../utils/storage";
 // 10 seconds from now
 // how often we need to do this
 const frequency = 10 * 1000;
-const countdownStorageKey = "tasky-countdown";
+export const countdownStorageKey = "tasky-countdown";
 
 type CountdownStatus = {
   isOverdue: boolean;
@@ -19,7 +19,7 @@ type CountdownStatus = {
   distance: Duration;
 };
 
-type PersistedCountdownState = {
+export type PersistedCountdownState = {
   currentNotificationId: string | undefined;
   completedAtTimestamps: number[];
 };
